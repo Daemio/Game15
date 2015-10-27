@@ -2,6 +2,7 @@ package com.example.damian.game15.view;
 
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.damian.game15.TheApplication;
@@ -11,16 +12,23 @@ import com.example.damian.game15.logic.GameField;
 /**
  * Created by Admin on 26.10.2015.
  */
-public class GameUtils {
-    static GameField game;
-    static SquareButton btn[][];
-    public static CallBackMovePerformed callback = new CallBackMovePerformed(){
+public class NotifyViews {
+    GameField game;
+    SquareButton btn[][];
+    public int countSteps;
+    public TextView tvCountSteps;
+
+    public void setCountSteps( TextView tvCountSteps) {
+       this.tvCountSteps = tvCountSteps;
+    }
+
+    CallBackMovePerformed callback = new CallBackMovePerformed() {
         @Override
         public void perform(int id) {
-            if(game.moveCell(game.getCellById(id))){
+            if (game.moveCell(game.getCellById(id))) {
                 refreshUI();
             }
-            if(game.isWinnary()) {
+            if (game.isWinnary()) {
                 Toast.makeText(TheApplication.getInstance().getApplicationContext(), "You Win!", Toast.LENGTH_LONG).show();
                 int size = game.getSize();
                 game.getCellAt(size - 1, size).setMovable(false);
@@ -29,7 +37,8 @@ public class GameUtils {
             }
         }
     };
-    public static void initField(LinearLayout llMain, int size){
+
+    public void initField(LinearLayout llMain, int size) {
         game = new GameField(size);
         btn = new SquareButton[size][size];
         int match = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -57,33 +66,34 @@ public class GameUtils {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countSteps++;
                 int viewId = v.getId();
                 callback.perform(Integer.parseInt(((SquareButton) v).getText().toString()));
+                if (tvCountSteps!= null){
+                    tvCountSteps.setText("Count steps " + countSteps);
+                }
             }
         };
-        for(int i=0;i<size;i++){
-            for(int j = 0;j<size;j++){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 btn[i][j].setOnClickListener(listener);
             }
         }
     }
 
-    public static void refreshUI(){
+    void refreshUI() {
         int size = game.getSize();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                int value = game.getCellAt(i+1,j+1).getId();
-                btn[i][j].setText((value == 0 ? "":""+value));
-                btn[i][j].setEnabled(game.getCellAt(i+1,j+1).isMovable());
+                int value = game.getCellAt(i + 1, j + 1).getId();
+                btn[i][j].setText((value == 0 ? "" : "" + value));
+                btn[i][j].setEnabled(game.getCellAt(i + 1, j + 1).isMovable());
             }
         }
     }
 
-    public static void newGame(int difficulity){
+    public void newGame(int difficulity) {
         game.newGame(difficulity);
         refreshUI();
     }
-
-
-
 }

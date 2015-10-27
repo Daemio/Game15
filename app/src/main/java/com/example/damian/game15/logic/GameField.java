@@ -84,7 +84,7 @@ public class GameField {
             list.add(this.getCellAt(x, y - 1));
         if (y < size)
             list.add(this.getCellAt(x, y + 1));
-        Log.d("mytag", "" + list.size());
+        //Log.d("mytag", "" + list.size());
         return list;
     }
 

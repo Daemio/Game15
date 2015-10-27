@@ -9,6 +9,8 @@ import com.example.damian.game15.TheApplication;
 import com.example.damian.game15.events.CallBackMovePerformed;
 import com.example.damian.game15.logic.GameField;
 
+import java.util.Timer;
+
 /**
  * Created by Admin on 26.10.2015.
  */
@@ -16,7 +18,14 @@ public class NotifyViews {
     GameField game;
     SquareButton btn[][];
     public int countSteps;
+    public int time; //time in seconds
     public TextView tvCountSteps;
+
+    public void setTvTime(TextView tvTime) {
+        this.tvTime = tvTime;
+    }
+
+    public TextView tvTime;
 
     public void setCountSteps( TextView tvCountSteps) {
        this.tvCountSteps = tvCountSteps;
@@ -70,7 +79,7 @@ public class NotifyViews {
                 int viewId = v.getId();
                 callback.perform(Integer.parseInt(((SquareButton) v).getText().toString()));
                 if (tvCountSteps!= null){
-                    tvCountSteps.setText("Count steps " + countSteps);
+                    tvCountSteps.setText("Moves:  " + countSteps);
                 }
             }
         };

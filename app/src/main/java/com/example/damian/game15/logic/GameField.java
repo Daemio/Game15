@@ -2,13 +2,14 @@ package com.example.damian.game15.logic;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Admin on 26.10.2015.
  */
-public class GameField {
+public class GameField implements Serializable{
     int size;
 
     public int getSize() {
@@ -131,12 +132,13 @@ public class GameField {
         return true;
     }
 
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("");
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                s.append("x").append("" + cells[i][j].getId());
+                s.append("" + cells[i][j].getId()).append("x");
             }
         }
 

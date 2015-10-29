@@ -1,5 +1,7 @@
 package com.example.damian.game15.view;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -9,12 +11,21 @@ import com.example.damian.game15.TheApplication;
 import com.example.damian.game15.events.CallBackMovePerformed;
 import com.example.damian.game15.logic.GameField;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.Timer;
 
 /**
  * Created by Admin on 26.10.2015.
  */
 public class NotifyViews {
+    final String SAVED_GAME = "game";
+    final String SAVED_TIME = "time";
+    final String SAVED_MOVES = "moves";
+
     GameField game;
     SquareButton btn[][];
     public int countSteps;
@@ -104,5 +115,22 @@ public class NotifyViews {
     public void newGame(int difficulity) {
         game.newGame(difficulity);
         refreshUI();
+    }
+
+    public void saveGame() throws FileNotFoundException {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(TheApplication.getInstance().getApplicationContext());
+        preferences.edit().clear().apply();
+        preferences.edit().putInt(SAVED_MOVES, countSteps).apply();
+        preferences.edit().putInt(SAVED_TIME,time).apply();
+    }
+
+    public void resumeGame() throws FileNotFoundException {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(TheApplication.getInstance().getApplicationContext());
+        if(!preferences.contains(SAVED_TIME)){
+            return;
+        }
+        preferences.getInt(SAVED_MOVES,countSteps);
+        preferences.getInt(SAVED_TIME,time);
+
     }
 }

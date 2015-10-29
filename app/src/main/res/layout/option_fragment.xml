@@ -72,7 +72,7 @@
         android:textStyle="bold"
         android:layout_marginTop="20dp"/>
     <TextView
-        android:id="@+id/tvDifficulity"
+        android:id="@+id/tvHighscoreMinMoves"
         android:text="Time: 300 seconds\nMoves: 67"
         android:gravity="center"
         android:layout_width="match_parent"

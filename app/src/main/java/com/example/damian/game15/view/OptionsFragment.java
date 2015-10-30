@@ -15,7 +15,7 @@ import com.example.damian.game15.R;
 /**
  * Created by Admin on 29.10.2015.
  */
-public class FragmentOptions extends Fragment {
+public class OptionsFragment extends Fragment {
     RadioGroup rgDifficulity;
     TextView tvHighscoreBestTime;
     TextView tvHighscoreMinMoves;

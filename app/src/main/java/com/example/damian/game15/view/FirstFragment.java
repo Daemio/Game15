@@ -9,12 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.damian.game15.R;
-import com.example.damian.game15.TheApplication;
 
 /**
  * Created by Admin on 29.10.2015.
  */
-public class FragmentFirst extends Fragment {
+public class FirstFragment extends Fragment implements View.OnClickListener{
     Button btnResume;
     Button btnNew;
     Button btnOptions;
@@ -28,26 +27,28 @@ public class FragmentFirst extends Fragment {
         btnOptions = (Button) v.findViewById(R.id.btnOptions);
         btnExit = (Button) v.findViewById(R.id.btnExit);
 
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()){
-                    case R.id.btnResumeGame:
-                        break;
-                    case R.id.btnNewGame:
-                        break;
-                    case R.id.btnOptions:
-                        break;
-                    case R.id.btnExit:
-                        break;
-                }
-            }
-        };
-        btnResume.setOnClickListener(listener);
-        btnNew.setOnClickListener(listener);
-        btnOptions.setOnClickListener(listener);
-        btnExit.setOnClickListener(listener);
+        btnResume.setOnClickListener(this);
+        btnNew.setOnClickListener(this);
+        btnOptions.setOnClickListener(this);
+        btnExit.setOnClickListener(this);
 
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnResumeGame:
+                break;
+            case R.id.btnNewGame:
+                Fragment fragment = new GameFragment();
+                ((MainActivity)getActivity()).getTransitManager().switchFragment(fragment);
+                break;
+            case R.id.btnOptions:
+                break;
+            case R.id.btnExit:
+                this.getActivity().finish();
+                break;
+        }
     }
 }

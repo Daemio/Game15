@@ -61,12 +61,12 @@ public class OptionsFragment extends Fragment {
                                 break;
                         }
                         GameSaver.saveIntValue(Utils.DIFFICULTY,difficulty);
+                        ((MainActivity)getActivity()).getTransitManager().back();
                         break;
                     case R.id.btnReset:
                         tvHighScoreBestTime.setText("");
                         tvHighScoreMinMoves.setText("");
                         rgDifficulty.check(R.id.rbEasy);
-                        GameSaver.saveIntValue(Utils.DIFFICULTY,Utils.DIFFICULTY_EASY);
                         break;
                 }
             }
@@ -76,5 +76,27 @@ public class OptionsFragment extends Fragment {
         btnReset.setOnClickListener(btnListener);
 
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        int diff = GameSaver.getIntValue(Utils.DIFFICULTY);
+        int id;
+        switch (diff){
+            case Utils.DIFFICULTY_EASY:
+                id = R.id.rbEasy;
+                break;
+            case Utils.DIFFICULTY_MEDIUM:
+                id = R.id.rbMedium;
+                break;
+            case Utils.DIFFICULTY_HARD:
+                id = R.id.rbHard;
+                break;
+            default:
+                id = R.id.rbEasy;
+                break;
+        }
+        rgDifficulty.check(id);
     }
 }

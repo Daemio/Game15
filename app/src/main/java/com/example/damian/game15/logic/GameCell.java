@@ -1,9 +1,11 @@
 package com.example.damian.game15.logic;
 
+import java.io.Serializable;
+
 /**
  * Created by Admin on 26.10.2015.
  */
-public class GameCell {
+public class GameCell implements Serializable{
     int id; //determines cell number, 0 for empty, 1..size^2-1 for others
     int x; //coordinates
     int y;

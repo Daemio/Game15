@@ -27,7 +27,7 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/btnExit"
+        android:id="@+id/btnBackToMenu"
         android:text="Exit"
         android:textAllCaps="false"
         android:layout_width="match_parent"

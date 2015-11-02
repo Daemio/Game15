@@ -1,4 +1,4 @@
-package com.example.damian.game15.view;
+package com.example.damian.game15.view.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.damian.game15.R;
+import com.example.damian.game15.view.MainActivity;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -28,7 +29,7 @@ public class SplashFragment extends Fragment {
             public void run() {
                 ((MainActivity)getActivity()).getTransitManager().switchFragment(new FirstFragment());
             }
-        }, 3500);
+        }, 2000);
         return v;
     }
 }

@@ -6,8 +6,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-import com.example.damian.game15.view.AbstractFragment;
-
 /**
  * Created by Admin on 30.10.2015.
  */

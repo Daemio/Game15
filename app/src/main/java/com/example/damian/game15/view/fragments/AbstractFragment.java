@@ -1,4 +1,4 @@
-package com.example.damian.game15.view;
+package com.example.damian.game15.view.fragments;
 
 import android.app.Fragment;
 

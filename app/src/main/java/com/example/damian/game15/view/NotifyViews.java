@@ -1,32 +1,22 @@
 package com.example.damian.game15.view;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.damian.game15.TheApplication;
+import com.example.damian.game15.Utils;
 import com.example.damian.game15.events.CallBackMovePerformed;
 import com.example.damian.game15.logic.GameField;
+import com.example.damian.game15.storage.GameSaver;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 /**
  * Created by Admin on 26.10.2015.
  */
 public class NotifyViews {
-    final String SAVED_GAME_FILENAME = "game";
-    final String SAVED_TIME = "time";
-    final String SAVED_MOVES = "moves";
-    final String SAVED_REQUIRED_MOVES = "reqMoves";
-
     GameField game;
     LinearLayout llMain;
     SquareButton btn[][];
@@ -89,7 +79,6 @@ public class NotifyViews {
                 btn[i][j] = new SquareButton(llMain.getContext());
                 btn[i][j].setId(i * size + j + 1);
                 btn[i][j].setTextSize(40);
-                //btn[i][j].setText(""+(i*size+j+1));
                 rows[i].addView(btn[i][j], btnParams);
             }
             llMain.addView(rows[i], rowParams);
@@ -131,41 +120,26 @@ public class NotifyViews {
         tvCountMoves.setText("Moves: 0");
         tvTime.setText("Time: 0 seconds");
         time = 0;
-        tvMinMoves.setText("Required Moves: " + difficulity);
+        tvMinMoves.setText("Required Moves: " + requiredMoves);
         refreshUI();
     }
 
     public void saveGame() throws IOException {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(TheApplication.getInstance().getApplicationContext());
-        preferences.edit().putInt(SAVED_MOVES, countMoves).apply();
-        preferences.edit().putInt(SAVED_TIME, time).apply();
-        preferences.edit().putInt(SAVED_REQUIRED_MOVES, requiredMoves).apply();
-        FileOutputStream fos = TheApplication.getInstance().getApplicationContext().openFileOutput(SAVED_GAME_FILENAME, Context.MODE_PRIVATE);
-        ObjectOutputStream os = new ObjectOutputStream(fos);
-        os.writeObject(game);
-        os.close();
-        fos.close();
+        GameSaver.saveGame(game);
+        GameSaver.saveIntValue(Utils.SAVED_TIME, time);
+        GameSaver.saveIntValue(Utils.SAVED_MOVES, countMoves);
+        GameSaver.saveIntValue(Utils.SAVED_REQUIRED_MOVES, requiredMoves);
+
     }
 
     public void resumeGame() throws IOException, ClassNotFoundException {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(TheApplication.getInstance().getApplicationContext());
-        if (!preferences.contains(SAVED_TIME)) {
-            return;
-        }
-        countMoves = preferences.getInt(SAVED_MOVES, 0);
-        time = preferences.getInt(SAVED_TIME, 0);
-        requiredMoves = preferences.getInt(SAVED_REQUIRED_MOVES, 0);
-
-        FileInputStream fis = TheApplication.getInstance().getApplicationContext().openFileInput(SAVED_GAME_FILENAME);
-        ObjectInputStream is = new ObjectInputStream(fis);
-        game = (GameField) is.readObject();
-        initField(game.getSize());
+        game = GameSaver.getSavedGame();
+        time = GameSaver.getIntValue(Utils.SAVED_TIME);
+        countMoves = GameSaver.getIntValue(Utils.SAVED_MOVES);
+        requiredMoves = GameSaver.getIntValue(Utils.SAVED_REQUIRED_MOVES);
+        tvMinMoves.setText("Required Moves: " + requiredMoves);
         tvCountMoves.setText("Moves: " + countMoves);
         tvTime.setText("Time: " + time + " seconds");
-        tvMinMoves.setText("Required Moves: " + requiredMoves);
-        is.close();
-        fis.close();
         refreshUI();
-
     }
 }

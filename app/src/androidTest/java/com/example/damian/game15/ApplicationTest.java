@@ -1,14 +1,23 @@
 package com.example.damian.game15;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.test.ApplicationTestCase;
 import android.util.Log;
 
+import com.example.damian.game15.logic.GameField;
 import com.example.damian.game15.view.MainActivity;
+import com.example.damian.game15.view.NotifyViews;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.prefs.Preferences;
 
 /**
@@ -19,14 +28,6 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         super(Application.class);
     }
 
-    public void TestPreferences(){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(TheApplication.getInstance().getApplicationContext());
-        int some = 10;
-        int x = preferences.getInt("some",0);
-        some++;
-        Log.d("mytag", ""+x);
-        preferences.edit().putInt("some", some).commit();
-        x = preferences.getInt("some",x);
-        Log.d("mytag", ""+x);
+    public void TestPreferences() {
     }
 }

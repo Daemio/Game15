@@ -1,7 +1,9 @@
 package com.example.damian.game15.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.damian.game15.R;
@@ -33,6 +35,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         //CountDownTimer;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent setIntent = new Intent(Intent.ACTION_MAIN);
+        setIntent.addCategory(Intent.CATEGORY_HOME);
+        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(setIntent);
+
+        return;
     }
 
     private void initStartFragment(){

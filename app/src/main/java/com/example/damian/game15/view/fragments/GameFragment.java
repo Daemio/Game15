@@ -103,6 +103,18 @@ public class GameFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        views.startTimer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        views.stopTimer();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         try {

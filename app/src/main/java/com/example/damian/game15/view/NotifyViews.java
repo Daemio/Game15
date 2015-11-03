@@ -1,7 +1,10 @@
 package com.example.damian.game15.view;
 
 import android.os.Handler;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -109,11 +112,24 @@ public class NotifyViews {
             llMain.addView(rows[i], rowParams);
         }
         refreshUI();
+
+        Button.OnTouchListener onTouchListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                countMoves++;
+
+                callback.perform(Integer.parseInt(((SquareButton) v).getText().toString()));
+                if (tvCountMoves != null) {
+                    tvCountMoves.setText("Moves: " + countMoves);
+                }
+                return false;
+            }
+        };
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 countMoves++;
-                int viewId = v.getId();
                 callback.perform(Integer.parseInt(((SquareButton) v).getText().toString()));
                 if (tvCountMoves != null) {
                     tvCountMoves.setText("Moves: " + countMoves);
@@ -122,7 +138,8 @@ public class NotifyViews {
         };
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                btn[i][j].setOnClickListener(listener);
+                //btn[i][j].setOnClickListener(listener);
+                btn[i][j].setOnTouchListener(onTouchListener);
             }
         }
     }
@@ -147,12 +164,12 @@ public class NotifyViews {
         time = 0;
         tvMinMoves.setText("Required Moves: " + requiredMoves);
         refreshUI();
-        startTimer();
+        //startTimer();
 
     }
 
     public void saveGame() throws IOException {
-        stopTimer();
+        //stopTimer();
         if(game.isWinnary()){
             GameSaver.deleteSavedGame();
             return;
@@ -173,10 +190,10 @@ public class NotifyViews {
         tvCountMoves.setText("Moves: " + countMoves);
         tvTime.setText("Time: " + time + " seconds");
         refreshUI();
-        startTimer();
+        //startTimer();
     }
 
-    void startTimer(){
+    public void startTimer(){
         timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -192,7 +209,7 @@ public class NotifyViews {
         myTimer.schedule(timerTask, 0, 1000);
     }
 
-    void stopTimer(){
+    public void stopTimer(){
         timerTask.cancel();
     }
 

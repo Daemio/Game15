@@ -72,11 +72,12 @@ public class WinDialog extends Dialog {
                 GameSaver.saveIntValue(Utils.HIGHSCORE_MIN_MOVES_TIME,time);
                 GameSaver.saveIntValue(Utils.HIGHSCORE_MIN_MOVES_MOVES, moves);
             }
-        }
-        if(hsTimeTime>time){//by time
-            tvHighScore.setText("You set high score by time!");
-            GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_TIME,time);
-            GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_MOVES,moves);
+        }else {
+            if (hsTimeTime > time) {//by time
+                tvHighScore.setText("You set high score by time!");
+                GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_TIME, time);
+                GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_MOVES, moves);
+            }
         }
 
         btnOK = (Button) findViewById(R.id.btnOK);

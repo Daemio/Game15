@@ -43,29 +43,29 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        final ExitDialog dialog = new ExitDialog(this);
-        dialog.setCallback(new CallBackDialogExit() {
-            @Override
-            public void onExitDialog(int actionCode) {
-                switch (actionCode) {
-                    case Utils.DIALOG_ACTION_CANCEL:
-                        dialog.dismiss();
-                        break;
-                    case Utils.DIALOG_ACTION_SAVE_AND_CLOSE:
-                        Intent setIntent = new Intent(Intent.ACTION_MAIN);
-                        setIntent.addCategory(Intent.CATEGORY_HOME);
-                        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        dialog.dismiss();
-                        startActivity(setIntent);
-                        break;
-                    case Utils.DIALOG_ACTION_CLOSE:
-                        dialog.dismiss();
-                        supportFinishAfterTransition();
-                        break;
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            final ExitDialog dialog = new ExitDialog(this);
+            dialog.setCallback(new CallBackDialogExit() {
+                @Override
+                public void onExitDialog(int actionCode) {
+                    switch (actionCode){
+                        case Utils.DIALOG_ACTION_CANCEL:
+                            dialog.dismiss();
+                            break;
+                        case Utils.DIALOG_ACTION_CLOSE:
+                            dialog.dismiss();
+                            finish();
+                            break;
+                    }
                 }
-            }
-        });
-        dialog.show();
+            });
+            dialog.show();
+            //additional code
+        } else {
+            getFragmentManager().popBackStack();
+        }
 
 
         return;

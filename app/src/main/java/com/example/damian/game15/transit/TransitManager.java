@@ -22,11 +22,11 @@ public class TransitManager {
     }
 
     public void switchFragment(Fragment fragment){
-        switchFragment(fragment, null, true);
+        switchFragment(fragment, null, false);
     };
 
     public void switchFragment(Fragment fragment, Bundle bundle){
-        switchFragment(fragment, bundle, true);
+        switchFragment(fragment, bundle, false);
     };
 
     public void switchFragment(Fragment fragment, Bundle bundle, boolean addToStack){
@@ -34,7 +34,9 @@ public class TransitManager {
         if (bundle!=null){
             fragment.setArguments(bundle);
         }
-        transaction.addToBackStack(addToStack ? "" : null);
+        if(addToStack){
+            transaction.addToBackStack("");
+        }
         transaction.replace(fragmentContainerRes, fragment).commitAllowingStateLoss();
     };
 

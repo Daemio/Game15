@@ -21,7 +21,6 @@ public class ExitDialog extends Dialog implements View.OnClickListener {
     }
 
     Button btnCancel;
-    Button btnSave;
     Button btnExit;
     public ExitDialog(Context context) {
         super(context);
@@ -32,10 +31,8 @@ public class ExitDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_exit);
         btnCancel = (Button) findViewById(R.id.btnCancel);
-        btnSave = (Button) findViewById(R.id.btnSave);
         btnExit = (Button) findViewById(R.id.btnExit);
         btnCancel.setOnClickListener(this);
-        btnSave.setOnClickListener(this);
         btnExit.setOnClickListener(this);
 
     }
@@ -46,9 +43,6 @@ public class ExitDialog extends Dialog implements View.OnClickListener {
         switch (v.getId()){
             case R.id.btnCancel:
                 action = Utils.DIALOG_ACTION_CANCEL;
-                break;
-            case R.id.btnSave:
-                action = Utils.DIALOG_ACTION_SAVE_AND_CLOSE;
                 break;
             case R.id.btnExit:
                 action = Utils.DIALOG_ACTION_CLOSE;

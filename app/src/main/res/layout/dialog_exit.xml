@@ -28,16 +28,6 @@
             android:layout_weight="1"
             android:layout_height="wrap_content" />
 
-        <Button
-            android:background="@drawable/dialog_btn"
-            android:textColor="@android:color/white"
-            android:text="Save and Exit"
-            android:id="@+id/btnSave"
-            android:textAllCaps="false"
-            android:layout_margin="10dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
 
         <Button
             android:background="@drawable/dialog_btn"

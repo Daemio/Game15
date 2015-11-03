@@ -21,7 +21,6 @@ public class Utils {
     public static final int DIFFICULTY_MEDIUM = 30;
     public static final int DIFFICULTY_HARD = 50;
 
-    public static final int DIALOG_ACTION_SAVE_AND_CLOSE = 1;
     public static final int DIALOG_ACTION_CLOSE = 2;
     public static final int DIALOG_ACTION_CANCEL = 3;
 

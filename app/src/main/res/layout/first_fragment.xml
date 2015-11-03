@@ -2,35 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="#0A0A2A">
 
     <Button
         android:id="@+id/btnResumeGame"
         android:text="Resume Game"
+        android:textColor="@android:color/white"
         android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false"/>
+        android:enabled="false"
+        android:background="@drawable/menu_btn"/>
 
     <Button
         android:id="@+id/btnNewGame"
         android:text="New Game"
+        android:textColor="@android:color/white"
         android:textAllCaps="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_btn"/>
 
     <Button
         android:id="@+id/btnOptions"
         android:text="Options"
+        android:textColor="@android:color/white"
         android:textAllCaps="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_btn"/>
 
     <Button
         android:id="@+id/btnBackToMenu"
         android:text="Exit"
+        android:textColor="@android:color/white"
         android:textAllCaps="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_btn"/>
 
 </LinearLayout>

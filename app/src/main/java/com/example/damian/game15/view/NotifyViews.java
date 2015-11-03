@@ -1,5 +1,6 @@
 package com.example.damian.game15.view;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.view.DragEvent;
 import android.view.MotionEvent;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.damian.game15.R;
 import com.example.damian.game15.TheApplication;
 import com.example.damian.game15.Utils;
 import com.example.damian.game15.events.CallBackMovePerformed;
@@ -18,6 +20,7 @@ import com.example.damian.game15.storage.GameSaver;
 import com.example.damian.game15.view.dialogs.WinDialog;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -107,6 +110,8 @@ public class NotifyViews {
                 btn[i][j] = new SquareButton(llMain.getContext());
                 btn[i][j].setId(i * size + j + 1);
                 btn[i][j].setTextSize(40);
+                btn[i][j].setTextColor(Color.parseColor("#210B61"));
+                btn[i][j].setBackground(TheApplication.getInstance().getApplicationContext().getResources().getDrawable(R.drawable.game_button, null));
                 rows[i].addView(btn[i][j], btnParams);
             }
             llMain.addView(rows[i], rowParams);
@@ -136,10 +141,12 @@ public class NotifyViews {
                 }
             }
         };
+
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                //btn[i][j].setOnClickListener(listener);
-                btn[i][j].setOnTouchListener(onTouchListener);
+                btn[i][j].setOnClickListener(listener);
+                //btn[i][j].setOnTouchListener(onTouchListener);
             }
         }
     }

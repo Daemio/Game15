@@ -31,11 +31,12 @@ public class WinDialog extends Dialog {
     }
 
     public WinDialog(Context context,int time,int moves,int reqMoves) {
-        super(context);
+        super(context,R.style.FullHeightDialog);
         this.time = time;
         this.moves = moves;
         this.reqMoves = reqMoves;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class WinDialog extends Dialog {
                 GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_TIME,time);
                 GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_MOVES,moves);
                 GameSaver.saveIntValue(Utils.HIGHSCORE_MIN_MOVES_TIME,time);
+
                 GameSaver.saveIntValue(Utils.HIGHSCORE_MIN_MOVES_MOVES, moves);
             }else{ //by moves
                 tvHighScore.setText("You set high score by moves!");

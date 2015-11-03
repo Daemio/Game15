@@ -23,8 +23,9 @@ public class ExitDialog extends Dialog implements View.OnClickListener {
     Button btnCancel;
     Button btnExit;
     public ExitDialog(Context context) {
-        super(context);
+        super(context,R.style.FullHeightDialog);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

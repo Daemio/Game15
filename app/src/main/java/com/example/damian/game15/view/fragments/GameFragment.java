@@ -57,6 +57,7 @@ public class GameFragment extends Fragment {
         views.setTvTime(tvTime);
         views.setLlMain(llMain);
         views.initField(4);
+        views.setUiHandler(((MainActivity)getActivity()).getHandler());
 
         if (mode == Utils.MODE_NEW) { //if we start new game
             int difficulty = GameSaver.getIntValue(Utils.DIFFICULTY);
@@ -83,7 +84,7 @@ public class GameFragment extends Fragment {
                 dialog.setCallBackDialogButton(new CallBackDialogButton() {
                     @Override
                     public void onButtonPressed() {
-                        ((MainActivity)getActivity()).getTransitManager().back();
+                        ((MainActivity) getActivity()).getTransitManager().back();
                         dialog.dismiss();
                     }
                 });
@@ -94,14 +95,20 @@ public class GameFragment extends Fragment {
         btnBackToMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    views.saveGame();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
                 ((MainActivity) getActivity()).getTransitManager().back();
             }
         });
         return v;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            views.saveGame();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

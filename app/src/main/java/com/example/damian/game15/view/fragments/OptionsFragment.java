@@ -68,6 +68,7 @@ public class OptionsFragment extends Fragment {
                         tvHighScoreBestTime.setText("");
                         tvHighScoreMinMoves.setText("");
                         rgDifficulty.check(R.id.rbEasy);
+                        GameSaver.deleteSavedGame();
                         GameSaver.saveIntValue(Utils.DIFFICULTY,Utils.DIFFICULTY_EASY);
                         GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_TIME,0);
                         GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_MOVES, 0);

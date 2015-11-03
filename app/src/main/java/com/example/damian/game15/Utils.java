@@ -21,7 +21,9 @@ public class Utils {
     public static final int DIFFICULTY_MEDIUM = 30;
     public static final int DIFFICULTY_HARD = 50;
 
+
     public static int MODE_NEW = 100;
     public static int MODE_RESUME = 200;
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.damian.game15.view;
 
+import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,11 +15,15 @@ import com.example.damian.game15.storage.GameSaver;
 import com.example.damian.game15.view.dialogs.WinDialog;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Admin on 26.10.2015.
  */
 public class NotifyViews {
+
+    Handler uiHandler;
     GameField game;
     LinearLayout llMain;
     SquareButton btn[][];
@@ -28,6 +33,13 @@ public class NotifyViews {
     TextView tvCountMoves;
     TextView tvMinMoves;
     CallBackWinDialog callBackWinDialog;
+
+    Timer myTimer = new Timer();
+    TimerTask timerTask;
+
+    public void setUiHandler(Handler uiHandler) {
+        this.uiHandler = uiHandler;
+    }
 
     public void setCallBackWinDialog(CallBackWinDialog callBackWinDialog) {
         this.callBackWinDialog = callBackWinDialog;
@@ -63,7 +75,8 @@ public class NotifyViews {
 //                game.getCellAt(size - 1, size).setMovable(false);
 //                game.getCellAt(size, size - 1).setMovable(false);
 //                refreshUI();
-                GameSaver.deleteSavedGame();
+                stopTimer();
+                //GameSaver.deleteSavedGame();
                 if(callBackWinDialog != null){
                     callBackWinDialog.onWin(time,countMoves,requiredMoves);
                 }
@@ -134,9 +147,16 @@ public class NotifyViews {
         time = 0;
         tvMinMoves.setText("Required Moves: " + requiredMoves);
         refreshUI();
+        startTimer();
+
     }
 
     public void saveGame() throws IOException {
+        stopTimer();
+        if(game.isWinnary()){
+            GameSaver.deleteSavedGame();
+            return;
+        }
         GameSaver.saveGame(game);
         GameSaver.saveIntValue(Utils.SAVED_TIME, time);
         GameSaver.saveIntValue(Utils.SAVED_MOVES, countMoves);
@@ -153,5 +173,28 @@ public class NotifyViews {
         tvCountMoves.setText("Moves: " + countMoves);
         tvTime.setText("Time: " + time + " seconds");
         refreshUI();
+        startTimer();
     }
+
+    void startTimer(){
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        time++;
+                        tvTime.setText("Time: " + time + " seconds");
+                    }
+                });
+            }
+        };
+        myTimer.schedule(timerTask, 0, 1000);
+    }
+
+    void stopTimer(){
+        timerTask.cancel();
+    }
+
+
 }

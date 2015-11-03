@@ -13,7 +13,7 @@
         android:text="Moves: 0"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
-        android:textSize="40dp"
+        android:textSize="25dp"
         android:textStyle="bold"
         android:layout_height="wrap_content" />
 
@@ -22,7 +22,7 @@
         android:text="Minimum Moves: 0"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
-        android:textSize="40dp"
+        android:textSize="25dp"
         android:textStyle="bold"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvMoves"
@@ -33,7 +33,7 @@
         android:text="Time: 0 seconds"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
-        android:textSize="40dp"
+        android:textSize="25dp"
         android:textStyle="bold"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvMinimumMoves"

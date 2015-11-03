@@ -1,6 +1,7 @@
 package com.example.damian.game15.view;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.damian.game15.R;
@@ -9,6 +10,11 @@ import com.example.damian.game15.transit.TransitManager;
 import com.example.damian.game15.view.fragments.SplashFragment;
 
 public class MainActivity extends AppCompatActivity {
+    final Handler handler = new Handler();
+
+    public Handler getHandler() {
+        return handler;
+    }
 
     private TransitManager manager;
 

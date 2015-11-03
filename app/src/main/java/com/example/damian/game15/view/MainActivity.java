@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(setIntent);
                         break;
                     case Utils.DIALOG_ACTION_CLOSE:
-                        getTransitManager().back();
-                        GameSaver.deleteSavedGame();
                         dialog.dismiss();
                         supportFinishAfterTransition();
                         break;

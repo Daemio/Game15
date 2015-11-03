@@ -1,5 +1,6 @@
 package com.example.damian.game15.view.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,7 +26,7 @@ import java.io.IOException;
 /**
  * Created by Admin on 29.10.2015.
  */
-public class GameFragment extends Fragment {
+public class GameFragment extends Fragment{
     LinearLayout llMain;
     TextView tvMoves;
     TextView tvMinimumMoves;
@@ -112,15 +113,16 @@ public class GameFragment extends Fragment {
     public void onPause() {
         super.onPause();
         views.stopTimer();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
         try {
             views.saveGame();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 }

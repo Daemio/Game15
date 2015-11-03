@@ -7,8 +7,12 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.damian.game15.R;
+import com.example.damian.game15.Utils;
+import com.example.damian.game15.events.CallBackDialogExit;
 import com.example.damian.game15.storage.GameSaver;
 import com.example.damian.game15.transit.TransitManager;
+import com.example.damian.game15.view.dialogs.ExitDialog;
+import com.example.damian.game15.view.fragments.FirstFragment;
 import com.example.damian.game15.view.fragments.SplashFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,10 +43,32 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent setIntent = new Intent(Intent.ACTION_MAIN);
-        setIntent.addCategory(Intent.CATEGORY_HOME);
-        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(setIntent);
+        final ExitDialog dialog = new ExitDialog(this);
+        dialog.setCallback(new CallBackDialogExit() {
+            @Override
+            public void onExitDialog(int actionCode) {
+                switch (actionCode) {
+                    case Utils.DIALOG_ACTION_CANCEL:
+                        dialog.dismiss();
+                        break;
+                    case Utils.DIALOG_ACTION_SAVE_AND_CLOSE:
+                        Intent setIntent = new Intent(Intent.ACTION_MAIN);
+                        setIntent.addCategory(Intent.CATEGORY_HOME);
+                        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        dialog.dismiss();
+                        startActivity(setIntent);
+                        break;
+                    case Utils.DIALOG_ACTION_CLOSE:
+                        getTransitManager().back();
+                        GameSaver.deleteSavedGame();
+                        dialog.dismiss();
+                        supportFinishAfterTransition();
+                        break;
+                }
+            }
+        });
+        dialog.show();
+
 
         return;
     }

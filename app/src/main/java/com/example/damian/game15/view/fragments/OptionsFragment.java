@@ -35,6 +35,7 @@ public class OptionsFragment extends Fragment {
         btnCancel = (Button) v.findViewById(R.id.btnCancel);
         btnSave = (Button) v.findViewById(R.id.btnSave);
         btnReset = (Button) v.findViewById(R.id.btnReset);
+        modifyHighScores();
 
 
         View.OnClickListener btnListener = new View.OnClickListener() {
@@ -67,6 +68,11 @@ public class OptionsFragment extends Fragment {
                         tvHighScoreBestTime.setText("");
                         tvHighScoreMinMoves.setText("");
                         rgDifficulty.check(R.id.rbEasy);
+                        GameSaver.saveIntValue(Utils.DIFFICULTY,Utils.DIFFICULTY_EASY);
+                        GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_TIME,0);
+                        GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_MOVES, 0);
+                        GameSaver.saveIntValue(Utils.HIGHSCORE_MIN_MOVES_TIME, 0);
+                        GameSaver.saveIntValue(Utils.HIGHSCORE_MIN_MOVES_MOVES, 0);
                         break;
                 }
             }
@@ -98,5 +104,18 @@ public class OptionsFragment extends Fragment {
                 break;
         }
         rgDifficulty.check(id);
+        modifyHighScores();
+    }
+
+    void modifyHighScores(){
+        int hsTimeTime = GameSaver.getIntValue(Utils.HIGHSCORE_BEST_TIME_TIME);
+        int hsTimeMoves = GameSaver.getIntValue(Utils.HIGHSCORE_BEST_TIME_MOVES);
+        int hsMovesTime = GameSaver.getIntValue(Utils.HIGHSCORE_MIN_MOVES_TIME);
+        int hsMovesMoves = GameSaver.getIntValue(Utils.HIGHSCORE_MIN_MOVES_MOVES);
+        if(hsTimeMoves == 0)
+            return; //no high scores
+
+        tvHighScoreBestTime.setText("Moves: "+hsTimeMoves+"\nTime: "+hsTimeTime+" seconds");
+        tvHighScoreMinMoves.setText("Moves: "+hsMovesMoves+"\nTime: "+hsMovesTime+" seconds");
     }
 }

@@ -11,10 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.damian.game15.R;
+import com.example.damian.game15.TheApplication;
 import com.example.damian.game15.Utils;
+import com.example.damian.game15.events.CallBackDialogButton;
+import com.example.damian.game15.events.CallBackWinDialog;
 import com.example.damian.game15.storage.GameSaver;
 import com.example.damian.game15.view.MainActivity;
 import com.example.damian.game15.view.NotifyViews;
+import com.example.damian.game15.view.dialogs.WinDialog;
 
 import java.io.IOException;
 
@@ -29,13 +33,13 @@ public class GameFragment extends Fragment {
     Button btnBackToMenu;
     int mode;
     NotifyViews views;
+    CallBackWinDialog callBackWinDialog;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mode = this.getArguments().getInt(Utils.BUNDLE_KEY_MODE);
-
     }
 
     @Nullable
@@ -72,6 +76,20 @@ public class GameFragment extends Fragment {
             }
         }
 
+        views.setCallBackWinDialog(new CallBackWinDialog() { //if win show dialog
+            @Override
+            public void onWin(int time, int countMoves, int requiredMoves) {
+                final WinDialog dialog = new WinDialog(getActivity(),time,countMoves,requiredMoves);
+                dialog.setCallBackDialogButton(new CallBackDialogButton() {
+                    @Override
+                    public void onButtonPressed() {
+                        ((MainActivity)getActivity()).getTransitManager().back();
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
 
         btnBackToMenu.setOnClickListener(new View.OnClickListener() {
             @Override

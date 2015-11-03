@@ -8,8 +8,10 @@ import android.widget.Toast;
 import com.example.damian.game15.TheApplication;
 import com.example.damian.game15.Utils;
 import com.example.damian.game15.events.CallBackMovePerformed;
+import com.example.damian.game15.events.CallBackWinDialog;
 import com.example.damian.game15.logic.GameField;
 import com.example.damian.game15.storage.GameSaver;
+import com.example.damian.game15.view.dialogs.WinDialog;
 
 import java.io.IOException;
 
@@ -25,6 +27,11 @@ public class NotifyViews {
     public int time; //time in seconds
     TextView tvCountMoves;
     TextView tvMinMoves;
+    CallBackWinDialog callBackWinDialog;
+
+    public void setCallBackWinDialog(CallBackWinDialog callBackWinDialog) {
+        this.callBackWinDialog = callBackWinDialog;
+    }
 
     public void setLlMain(LinearLayout llMain) {
         this.llMain = llMain;
@@ -51,11 +58,16 @@ public class NotifyViews {
                 refreshUI();
             }
             if (game.isWinnary()) {
-                Toast.makeText(TheApplication.getInstance().getApplicationContext(), "You Win!", Toast.LENGTH_LONG).show();
-                int size = game.getSize();
-                game.getCellAt(size - 1, size).setMovable(false);
-                game.getCellAt(size, size - 1).setMovable(false);
-                refreshUI();
+//                Toast.makeText(TheApplication.getInstance().getApplicationContext(), "You Win!", Toast.LENGTH_LONG).show();
+//                int size = game.getSize();
+//                game.getCellAt(size - 1, size).setMovable(false);
+//                game.getCellAt(size, size - 1).setMovable(false);
+//                refreshUI();
+                GameSaver.deleteSavedGame();
+                if(callBackWinDialog != null){
+                    callBackWinDialog.onWin(time,countMoves,requiredMoves);
+                }
+
             }
         }
     };

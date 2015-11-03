@@ -58,7 +58,7 @@
         android:layout_marginTop="20dp"/>
     <TextView
         android:id="@+id/tvHighscoreBestTime"
-        android:text="Time: 100 seconds\nMoves: 120"
+        android:text=""
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
         android:layout_marginTop="20dp"/>
     <TextView
         android:id="@+id/tvHighscoreMinMoves"
-        android:text="Time: 300 seconds\nMoves: 67"
+        android:text=""
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

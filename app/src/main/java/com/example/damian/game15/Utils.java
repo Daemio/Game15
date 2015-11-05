@@ -28,5 +28,11 @@ public class Utils {
     public static int MODE_NEW = 100;
     public static int MODE_RESUME = 200;
 
+    public static int DIRECTION_RIGHT = 1;
+    public static int DIRECTION_LEFT = 2;
+    public static int DIRECTION_TOP = 3;
+    public static int DIRECTION_BOTTOM = 4;
+    public static int DIRECTION_NONE = 5;
+
 
 }

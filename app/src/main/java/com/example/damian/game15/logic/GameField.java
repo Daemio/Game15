@@ -2,6 +2,8 @@ package com.example.damian.game15.logic;
 
 import android.util.Log;
 
+import com.example.damian.game15.Utils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +132,29 @@ public class GameField implements Serializable{
         cells[x0 - 1][y0 - 1] = cell;
         modifyMovableStates();
         return true;
+    }
+
+    public int getMovementDirection(int id){
+        GameCell cell = getCellById(id);
+        if (!cell.isMovable()) {
+            return Utils.DIRECTION_NONE;
+        }
+        GameCell zeroCell = getCellById(0);
+
+        if(cell.getX()<zeroCell.getX()){
+            return Utils.DIRECTION_BOTTOM;
+        }
+        if(cell.getX()>zeroCell.getX()){
+            return Utils.DIRECTION_TOP;
+        }
+        if(cell.getY()<zeroCell.getY()){
+            return Utils.DIRECTION_RIGHT;
+        }
+        if(cell.getY()>zeroCell.getY()){
+            return Utils.DIRECTION_LEFT;
+        }
+
+        return Utils.DIRECTION_NONE;
     }
 
 

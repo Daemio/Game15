@@ -3,8 +3,10 @@ package com.example.damian.game15.view;
 import android.graphics.Color;
 import android.os.Handler;
 import android.view.DragEvent;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import com.example.damian.game15.R;
 import com.example.damian.game15.TheApplication;
 import com.example.damian.game15.Utils;
 import com.example.damian.game15.events.CallBackMovePerformed;
+import com.example.damian.game15.events.CallBackViewSwiped;
 import com.example.damian.game15.events.CallBackWinDialog;
 import com.example.damian.game15.logic.GameField;
 import com.example.damian.game15.storage.GameSaver;
@@ -76,7 +79,7 @@ public class NotifyViews {
                 refreshUI();
             }
             if (game.isWinnary()) {
-//                Toast.makeText(TheApplication.getInstance().getApplicationContext(), "You Win!", Toast.LENGTH_LONG).show();
+//                Toast.makeText(TheApplication.getInstance().getApplicationContext(), "You Win!", Toast.LENGTH_SHORT).show();
 //                int size = game.getSize();
 //                game.getCellAt(size - 1, size).setMovable(false);
 //                game.getCellAt(size, size - 1).setMovable(false);
@@ -102,6 +105,8 @@ public class NotifyViews {
         LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
                 0, wrap);
         btnParams.weight = 1;
+        //btnParams.gravity = Gravity.CENTER;
+        //btnParams.gravity = Gravity.FILL;
         LinearLayout rows[] = new LinearLayout[size];
         for (int i = 0; i < size; i++) {
             rows[i] = new LinearLayout(llMain.getContext());
@@ -113,6 +118,7 @@ public class NotifyViews {
                 btn[i][j].setTextColor(Color.parseColor("#210B61"));
                 btn[i][j].setBackground(TheApplication.getInstance().getApplicationContext().getResources().getDrawable(R.drawable.game_button, null));
                 rows[i].addView(btn[i][j], btnParams);
+                btn[i][j].setGravity(Gravity.CENTER);
             }
             llMain.addView(rows[i], rowParams);
         }
@@ -143,10 +149,58 @@ public class NotifyViews {
         };
 
 
+        MyOnSwipeListener onSwipeListener = new MyOnSwipeListener(new CallBackViewSwiped() {
+            @Override
+            public void onRightSwipe(View v) {
+                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "RIGHT", Toast.LENGTH_SHORT).show();
+                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
+                if(game.getMovementDirection(btnId)==Utils.DIRECTION_RIGHT){
+                    countMoves++;
+                    callback.perform(btnId);
+                    tvCountMoves.setText("Moves: " + countMoves);
+                }
+            }
+
+            @Override
+            public void onLeftSwipe(View v) {
+                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "LEFT", Toast.LENGTH_SHORT).show();
+                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
+                if(game.getMovementDirection(btnId)==Utils.DIRECTION_LEFT){
+                    countMoves++;
+                    callback.perform(btnId);
+                    tvCountMoves.setText("Moves: " + countMoves);
+                }
+            }
+
+            @Override
+            public void onTopSwipe(View v) {
+                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "TOP", Toast.LENGTH_SHORT).show();
+                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
+                if(game.getMovementDirection(btnId)==Utils.DIRECTION_TOP){
+                    countMoves++;
+                    callback.perform(btnId);
+                    tvCountMoves.setText("Moves: " + countMoves);
+                }
+            }
+
+            @Override
+            public void onBottomSwipe(View v) {
+                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "BOTTOM", Toast.LENGTH_SHORT).show();
+                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
+                if(game.getMovementDirection(btnId)==Utils.DIRECTION_BOTTOM){
+                    countMoves++;
+                    callback.perform(btnId);
+                    tvCountMoves.setText("Moves: " + countMoves);
+                }
+            }
+        });
+
+
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                btn[i][j].setOnClickListener(listener);
+                //btn[i][j].setOnClickListener(listener);
                 //btn[i][j].setOnTouchListener(onTouchListener);
+                btn[i][j].setOnTouchListener(onSwipeListener);
             }
         }
     }

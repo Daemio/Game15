@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             dialog.show();
-            //additional code
         } else {
             getFragmentManager().popBackStack();
         }

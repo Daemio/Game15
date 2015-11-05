@@ -34,7 +34,7 @@
         android:background="@drawable/menu_btn"/>
 
     <Button
-        android:id="@+id/btnBackToMenu"
+        android:id="@+id/btnExit"
         android:text="Exit"
         android:textColor="@android:color/white"
         android:textAllCaps="false"

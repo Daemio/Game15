@@ -28,7 +28,7 @@ public class FirstFragment extends Fragment implements View.OnClickListener{
         btnResume = (Button) v.findViewById(R.id.btnResumeGame);//fix enabled state
         btnNew = (Button) v.findViewById(R.id.btnNewGame);
         btnOptions = (Button) v.findViewById(R.id.btnOptions);
-        btnExit = (Button) v.findViewById(R.id.btnBackToMenu);
+        btnExit = (Button) v.findViewById(R.id.btnExit);
 
         btnResume.setOnClickListener(this);
         btnNew.setOnClickListener(this);
@@ -67,8 +67,8 @@ public class FirstFragment extends Fragment implements View.OnClickListener{
                 fragment = new OptionsFragment();
                 ((MainActivity)getActivity()).getTransitManager().switchFragment(fragment,null,true);
                 break;
-            case R.id.btnBackToMenu:
-                this.getActivity().finish();
+            case R.id.btnExit:
+                ((MainActivity)getActivity()).showExitDialog();
                 break;
         }
     }

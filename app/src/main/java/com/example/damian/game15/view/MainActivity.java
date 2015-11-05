@@ -46,22 +46,7 @@ public class MainActivity extends AppCompatActivity {
         int count = getFragmentManager().getBackStackEntryCount();
 
         if (count == 0) {
-            final ExitDialog dialog = new ExitDialog(this);
-            dialog.setCallback(new CallBackDialogExit() {
-                @Override
-                public void onExitDialog(int actionCode) {
-                    switch (actionCode){
-                        case Utils.DIALOG_ACTION_CANCEL:
-                            dialog.dismiss();
-                            break;
-                        case Utils.DIALOG_ACTION_CLOSE:
-                            dialog.dismiss();
-                            finish();
-                            break;
-                    }
-                }
-            });
-            dialog.show();
+            showExitDialog();
         } else {
             getFragmentManager().popBackStack();
         }
@@ -72,5 +57,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void initStartFragment(){
         manager.switchFragment(new SplashFragment());
+    }
+
+    public void showExitDialog(){
+        final ExitDialog dialog = new ExitDialog(this);
+        dialog.setCallback(new CallBackDialogExit() {
+            @Override
+            public void onExitDialog(int actionCode) {
+                switch (actionCode){
+                    case Utils.DIALOG_ACTION_CANCEL:
+                        dialog.dismiss();
+                        break;
+                    case Utils.DIALOG_ACTION_CLOSE:
+                        dialog.dismiss();
+                        finish();
+                        break;
+                }
+            }
+        });
+        dialog.show();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.damian.game15.view.fragments;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.damian.game15.R;
-import com.example.damian.game15.TheApplication;
 import com.example.damian.game15.Utils;
 import com.example.damian.game15.events.CallBackDialogButton;
 import com.example.damian.game15.events.CallBackWinDialog;
@@ -51,7 +49,7 @@ public class GameFragment extends Fragment{
         tvMoves = (TextView) v.findViewById(R.id.tvMoves);
         tvMinimumMoves = (TextView) v.findViewById(R.id.tvMinimumMoves);
         tvTime = (TextView) v.findViewById(R.id.tvTime);
-        btnBackToMenu = (Button) v.findViewById(R.id.btnBackToMenu);
+        btnBackToMenu = (Button) v.findViewById(R.id.btnExit);
         views = new NotifyViews();
         views.setCountMoves(tvMoves);
         views.setTvMinMoves(tvMinimumMoves);

@@ -69,11 +69,12 @@ public class OptionsFragment extends Fragment {
                         tvHighScoreMinMoves.setText("");
                         rgDifficulty.check(R.id.rbEasy);
                         GameSaver.deleteSavedGame();
-                        GameSaver.saveIntValue(Utils.DIFFICULTY,Utils.DIFFICULTY_EASY);
+                        GameSaver.saveIntValue(Utils.DIFFICULTY, Utils.DIFFICULTY_EASY);
                         GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_TIME,0);
                         GameSaver.saveIntValue(Utils.HIGHSCORE_BEST_TIME_MOVES, 0);
                         GameSaver.saveIntValue(Utils.HIGHSCORE_MIN_MOVES_TIME, 0);
                         GameSaver.saveIntValue(Utils.HIGHSCORE_MIN_MOVES_MOVES, 0);
+                        ((MainActivity)getActivity()).getTransitManager().back();
                         break;
                 }
             }

@@ -116,7 +116,8 @@ public class NotifyViews {
                 btn[i][j].setId(i * size + j + 1);
                 btn[i][j].setTextSize(40);
                 btn[i][j].setTextColor(Color.parseColor("#210B61"));
-                btn[i][j].setBackground(TheApplication.getInstance().getApplicationContext().getResources().getDrawable(R.drawable.game_button, null));
+                btn[i][j].setBackgroundResource(R.drawable.game_button);
+                //btn[i][j].setBackground(TheApplication.getInstance().getApplicationContext().getResources().getDrawable(R.drawable.game_button, null));
                 rows[i].addView(btn[i][j], btnParams);
                 btn[i][j].setGravity(Gravity.CENTER);
             }

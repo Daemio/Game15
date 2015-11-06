@@ -65,15 +65,7 @@ public class GameFragment extends Fragment{
             }
             views.newGame(difficulty);
         } else { //if we resume saved game
-            try {
-                try {
-                    views.resumeGame();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            views.resumeGame();
         }
 
         views.setCallBackWinDialog(new CallBackWinDialog() { //if win show dialog
@@ -111,11 +103,7 @@ public class GameFragment extends Fragment{
     public void onPause() {
         super.onPause();
         views.stopTimer();
-        try {
-            views.saveGame();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        views.saveGame();
     }
 
     @Override

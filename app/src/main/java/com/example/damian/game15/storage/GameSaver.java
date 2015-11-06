@@ -3,7 +3,9 @@ package com.example.damian.game15.storage;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
+import com.example.damian.game15.TheApplication;
 import com.example.damian.game15.Utils;
 import com.example.damian.game15.logic.GameField;
 
@@ -33,23 +35,33 @@ public class GameSaver {
         return preferences.getInt(valueKey, 0);
     }
 
-    public static void saveGame(GameField game) throws IOException {
+    public static void saveGame(GameField game) {
         activity.deleteFile(Utils.SAVED_GAME_FILENAME);
-        FileOutputStream fos = activity.openFileOutput(Utils.SAVED_GAME_FILENAME, Context.MODE_PRIVATE);
-        ObjectOutputStream os = new ObjectOutputStream(fos);
-        os.writeObject(game);
-        os.close();
-        fos.close();
+        try {
+            FileOutputStream fos = activity.openFileOutput(Utils.SAVED_GAME_FILENAME, Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(game);
+            os.close();
+            fos.close();
+        }catch (IOException e){
+            Toast.makeText(TheApplication.getInstance().getApplicationContext(),"Game can not be saved",Toast.LENGTH_LONG);
+        }
         SharedPreferences preferences = activity.getSharedPreferences(Utils.PREFERENCES_KEY, Context.MODE_PRIVATE);
         preferences.edit().putBoolean(Utils.GAME_IS_SAVED, true).apply();
     }
 
-    public static GameField getSavedGame() throws IOException, ClassNotFoundException {
-        FileInputStream fis = activity.openFileInput(Utils.SAVED_GAME_FILENAME);
-        ObjectInputStream is = new ObjectInputStream(fis);
-        GameField game = (GameField) is.readObject();
-        is.close();
-        fis.close();
+    public static GameField getSavedGame(){
+        GameField game;
+        try {
+            FileInputStream fis = activity.openFileInput(Utils.SAVED_GAME_FILENAME);
+            ObjectInputStream is = new ObjectInputStream(fis);
+            game = (GameField) is.readObject();
+            is.close();
+            fis.close();
+        }catch (Exception e){
+            Toast.makeText(TheApplication.getInstance().getApplicationContext(),"Saved game can not be resumed, starting new",Toast.LENGTH_LONG);
+            return new GameField(4);
+        }
         return game;
     }
 

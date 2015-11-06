@@ -2,28 +2,19 @@ package com.example.damian.game15.view;
 
 import android.graphics.Color;
 import android.os.Handler;
-import android.view.DragEvent;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.damian.game15.R;
-import com.example.damian.game15.TheApplication;
 import com.example.damian.game15.Utils;
 import com.example.damian.game15.events.CallBackMovePerformed;
 import com.example.damian.game15.events.CallBackViewSwiped;
 import com.example.damian.game15.events.CallBackWinDialog;
 import com.example.damian.game15.logic.GameField;
 import com.example.damian.game15.storage.GameSaver;
-import com.example.damian.game15.view.dialogs.WinDialog;
 
-import java.io.IOException;
-import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,19 +23,39 @@ import java.util.TimerTask;
  */
 public class NotifyViews {
 
-    Handler uiHandler;
-    GameField game;
-    LinearLayout llMain;
-    SquareButton btn[][];
-    public int requiredMoves;
-    public int countMoves;
-    public int time; //time in seconds
-    TextView tvCountMoves;
-    TextView tvMinMoves;
-    CallBackWinDialog callBackWinDialog;
+    private Handler uiHandler;
+    private GameField game;
+    private LinearLayout llMain;
+    private SquareButton btn[][];
+    private int requiredMoves;
+    private int countMoves;
+    private int time; //time in seconds
 
-    Timer myTimer = new Timer();
-    TimerTask timerTask;
+    private TextView tvCountMoves;
+    private TextView tvMinMoves;
+    private TextView tvTime;
+
+    private CallBackWinDialog callBackWinDialog;
+    private Timer myTimer = new Timer();
+    private TimerTask timerTask;
+
+    private CallBackMovePerformed callBackMovePerformed = new CallBackMovePerformed() {
+        @Override
+        public void perform(int id) {
+            if (game.moveCell(game.getCellById(id))) {
+                refreshUI();
+            }
+            if (game.isWinnary()) {
+                stopTimer();
+                if (callBackWinDialog != null) {
+                    callBackWinDialog.onWin(time, countMoves, requiredMoves);
+                }
+
+            }
+        }
+    };
+
+
 
     public void setUiHandler(Handler uiHandler) {
         this.uiHandler = uiHandler;
@@ -66,147 +77,24 @@ public class NotifyViews {
         this.tvTime = tvTime;
     }
 
-    public TextView tvTime;
-
     public void setCountMoves(TextView tvCountSteps) {
         this.tvCountMoves = tvCountSteps;
     }
 
-    CallBackMovePerformed callback = new CallBackMovePerformed() {
-        @Override
-        public void perform(int id) {
-            if (game.moveCell(game.getCellById(id))) {
-                refreshUI();
-            }
-            if (game.isWinnary()) {
-//                Toast.makeText(TheApplication.getInstance().getApplicationContext(), "You Win!", Toast.LENGTH_SHORT).show();
-//                int size = game.getSize();
-//                game.getCellAt(size - 1, size).setMovable(false);
-//                game.getCellAt(size, size - 1).setMovable(false);
-//                refreshUI();
-                stopTimer();
-                //GameSaver.deleteSavedGame();
-                if(callBackWinDialog != null){
-                    callBackWinDialog.onWin(time,countMoves,requiredMoves);
-                }
-
-            }
-        }
-    };
-
     public void initField(int size) {
         game = new GameField(size);
-        btn = new SquareButton[size][size];
-        int match = LinearLayout.LayoutParams.MATCH_PARENT;
-        int wrap = LinearLayout.LayoutParams.WRAP_CONTENT;
-        LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
-                match, wrap);
-        rowParams.weight = 1;
-        LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
-                0, wrap);
-        btnParams.weight = 1;
-        //btnParams.gravity = Gravity.CENTER;
-        //btnParams.gravity = Gravity.FILL;
-        LinearLayout rows[] = new LinearLayout[size];
-        for (int i = 0; i < size; i++) {
-            rows[i] = new LinearLayout(llMain.getContext());
-            rows[i].setOrientation(LinearLayout.HORIZONTAL);
-            for (int j = 0; j < size; j++) {
-                btn[i][j] = new SquareButton(llMain.getContext());
-                btn[i][j].setId(i * size + j + 1);
-                btn[i][j].setTextSize(40);
-                btn[i][j].setTextColor(Color.parseColor("#210B61"));
-                btn[i][j].setBackgroundResource(R.drawable.game_button);
-                //btn[i][j].setBackground(TheApplication.getInstance().getApplicationContext().getResources().getDrawable(R.drawable.game_button, null));
-                rows[i].addView(btn[i][j], btnParams);
-                btn[i][j].setGravity(Gravity.CENTER);
-            }
-            llMain.addView(rows[i], rowParams);
-        }
+        createButtons(size);
         refreshUI();
-
-        Button.OnTouchListener onTouchListener = new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                countMoves++;
-
-                callback.perform(Integer.parseInt(((SquareButton) v).getText().toString()));
-                if (tvCountMoves != null) {
-                    tvCountMoves.setText("Moves: " + countMoves);
-                }
-                return false;
-            }
-        };
-
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                countMoves++;
-                callback.perform(Integer.parseInt(((SquareButton) v).getText().toString()));
-                if (tvCountMoves != null) {
-                    tvCountMoves.setText("Moves: " + countMoves);
-                }
-            }
-        };
-
-
-        MyOnSwipeListener onSwipeListener = new MyOnSwipeListener(new CallBackViewSwiped() {
-            @Override
-            public void onRightSwipe(View v) {
-                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "RIGHT", Toast.LENGTH_SHORT).show();
-                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
-                if(game.getMovementDirection(btnId)==Utils.DIRECTION_RIGHT){
-                    countMoves++;
-                    callback.perform(btnId);
-                    tvCountMoves.setText("Moves: " + countMoves);
-                }
-            }
-
-            @Override
-            public void onLeftSwipe(View v) {
-                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "LEFT", Toast.LENGTH_SHORT).show();
-                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
-                if(game.getMovementDirection(btnId)==Utils.DIRECTION_LEFT){
-                    countMoves++;
-                    callback.perform(btnId);
-                    tvCountMoves.setText("Moves: " + countMoves);
-                }
-            }
-
-            @Override
-            public void onTopSwipe(View v) {
-                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "TOP", Toast.LENGTH_SHORT).show();
-                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
-                if(game.getMovementDirection(btnId)==Utils.DIRECTION_TOP){
-                    countMoves++;
-                    callback.perform(btnId);
-                    tvCountMoves.setText("Moves: " + countMoves);
-                }
-            }
-
-            @Override
-            public void onBottomSwipe(View v) {
-                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "BOTTOM", Toast.LENGTH_SHORT).show();
-                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
-                if(game.getMovementDirection(btnId)==Utils.DIRECTION_BOTTOM){
-                    countMoves++;
-                    callback.perform(btnId);
-                    tvCountMoves.setText("Moves: " + countMoves);
-                }
-            }
-        });
-
+        MyOnSwipeListener onSwipeListener = createListener();
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                //btn[i][j].setOnClickListener(listener);
-                //btn[i][j].setOnTouchListener(onTouchListener);
                 btn[i][j].setOnTouchListener(onSwipeListener);
             }
         }
     }
 
-    void refreshUI() {
+    private void refreshUI() {
         int size = game.getSize();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -230,9 +118,9 @@ public class NotifyViews {
 
     }
 
-    public void saveGame() throws IOException {
+    public void saveGame() {
         //stopTimer();
-        if(game.isWinnary()){
+        if (game.isWinnary()) {
             GameSaver.deleteSavedGame();
             return;
         }
@@ -243,7 +131,7 @@ public class NotifyViews {
 
     }
 
-    public void resumeGame() throws IOException, ClassNotFoundException {
+    public void resumeGame() {
         game = GameSaver.getSavedGame();
         time = GameSaver.getIntValue(Utils.SAVED_TIME);
         countMoves = GameSaver.getIntValue(Utils.SAVED_MOVES);
@@ -255,7 +143,7 @@ public class NotifyViews {
         //startTimer();
     }
 
-    public void startTimer(){
+    public void startTimer() {
         timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -271,9 +159,86 @@ public class NotifyViews {
         myTimer.schedule(timerTask, 0, 1000);
     }
 
-    public void stopTimer(){
+    public void stopTimer() {
         timerTask.cancel();
     }
 
+    private void createButtons(int size) {
+        btn = new SquareButton[size][size];
+        int match = LinearLayout.LayoutParams.MATCH_PARENT;
+        int wrap = LinearLayout.LayoutParams.WRAP_CONTENT;
+        LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
+                match, wrap);
+        rowParams.weight = 1;
+        LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(
+                0, wrap);
+        btnParams.weight = 1;
+        LinearLayout rows[] = new LinearLayout[size];
+        for (int i = 0; i < size; i++) {
+            rows[i] = new LinearLayout(llMain.getContext());
+            rows[i].setOrientation(LinearLayout.HORIZONTAL);
+            for (int j = 0; j < size; j++) {
+                btn[i][j] = new SquareButton(llMain.getContext());
+                btn[i][j].setId(i * size + j + 1);
+                btn[i][j].setTextSize(40);
+                btn[i][j].setTextColor(Color.parseColor("#210B61"));
+                btn[i][j].setBackgroundResource(R.drawable.game_button);
+                rows[i].addView(btn[i][j], btnParams);
+                btn[i][j].setGravity(Gravity.CENTER);
+            }
+            llMain.addView(rows[i], rowParams);
+        }
+    }
+
+    private void performButtonSwipe(int btnId) {
+        if(callBackMovePerformed == null){
+            return;
+        }
+        countMoves++;
+        tvCountMoves.setText("Moves: " + countMoves);
+        callBackMovePerformed.perform(btnId);
+    }
+
+    private MyOnSwipeListener createListener(){
+        return new MyOnSwipeListener(new CallBackViewSwiped() {
+            @Override
+            public void onRightSwipe(View v) {
+                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "RIGHT", Toast.LENGTH_SHORT).show();
+                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
+                if (game.getMovementDirection(btnId) == Utils.DIRECTION_RIGHT) {
+                    performButtonSwipe(btnId);
+                }
+            }
+
+            @Override
+            public void onLeftSwipe(View v) {
+                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "LEFT", Toast.LENGTH_SHORT).show();
+                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
+                if (game.getMovementDirection(btnId) == Utils.DIRECTION_LEFT) {
+                    performButtonSwipe(btnId);
+                }
+            }
+
+            @Override
+            public void onTopSwipe(View v) {
+                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "TOP", Toast.LENGTH_SHORT).show();
+                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
+                if (game.getMovementDirection(btnId) == Utils.DIRECTION_TOP) {
+                    performButtonSwipe(btnId);
+                }
+            }
+
+            @Override
+            public void onBottomSwipe(View v) {
+                //Toast.makeText(TheApplication.getInstance().getApplicationContext(), "BOTTOM", Toast.LENGTH_SHORT).show();
+                int btnId = Integer.parseInt(((SquareButton) v).getText().toString());
+                if (game.getMovementDirection(btnId) == Utils.DIRECTION_BOTTOM) {
+                    performButtonSwipe(btnId);
+                }
+            }
+        });
+    }
 
 }
+
+

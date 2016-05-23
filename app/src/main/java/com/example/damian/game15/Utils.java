@@ -34,5 +34,6 @@ public class Utils {
     public static int DIRECTION_BOTTOM = 4;
     public static int DIRECTION_NONE = 5;
 
+    public static int SPLASH_ANIMATION_DURATION = 250;
 
 }

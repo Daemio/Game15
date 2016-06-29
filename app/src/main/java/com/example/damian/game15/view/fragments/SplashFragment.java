@@ -25,17 +25,17 @@ public class SplashFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.splash,container,false);
         ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
-        //Picasso.with(v.getContext()).load(R.drawable.frame8).into(imageView);
-        AnimationDrawable anim = getAnimation();
-        v.setBackground(anim);//requires API 16+
-        anim.start();
+        Picasso.with(v.getContext()).load(R.drawable.frame8).into(imageView);
+        //AnimationDrawable anim = getAnimation();
+        //v.setBackground(anim);//requires API 16+
+        //anim.start();
         
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 ((MainActivity)getActivity()).getTransitManager().switchFragment(new FirstFragment());
             }
-        }, 8000);
+        }, 3000);
         
 
 
